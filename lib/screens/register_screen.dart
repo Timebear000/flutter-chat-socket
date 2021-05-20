@@ -1,9 +1,12 @@
+import 'package:chat/services/auth_service.dart';
+import 'package:chat/utils/mostar_alert.dart';
 import 'package:chat/widgets/button_blue.dart';
 import 'package:chat/widgets/custom_input.dart';
 import 'package:chat/widgets/labels.dart';
 import 'package:chat/widgets/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatelessWidget {
   @override
@@ -49,6 +52,7 @@ class __FormState extends State<_Form> {
   final _passwordCtroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -64,7 +68,7 @@ class __FormState extends State<_Form> {
             icon: Icons.mail_outline,
             placeholder: 'Email',
             controller: _emailCtroller,
-            isPassword: true,
+            keyboardType: TextInputType.emailAddress,
           ),
           CustomInput(
             icon: Icons.lock_outline,
@@ -75,9 +79,20 @@ class __FormState extends State<_Form> {
           // TextField(),
           ButtonBlue(
             title: '회원가입',
-            onPressed: () {
-              print('email : ${_emailCtroller.text}');
-            },
+            onPressed: authService.authenCando
+                ? null
+                : () async {
+                    final registerOK = await authService.register(
+                        _nameCtroller.text.trim(),
+                        _emailCtroller.text.trim(),
+                        _passwordCtroller.text.trim());
+                    if (registerOK == true) {
+                      Navigator.pushReplacementNamed(context, 'user');
+                    } else {
+                      mostrarAlerta(
+                          context, '회원가입이 실패했습니다.', registerOK.toString());
+                    }
+                  },
           ),
         ],
       ),
