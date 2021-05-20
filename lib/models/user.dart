@@ -16,7 +16,7 @@ class User {
     this.uid,
   });
 
-  String online;
+  bool online;
   String name;
   String email;
   String uid;

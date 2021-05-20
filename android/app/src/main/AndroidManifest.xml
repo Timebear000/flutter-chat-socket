@@ -1,9 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chat">
    <application
+        android:usesCleartextTraffic="true"
         android:label="chat"
         android:icon="@mipmap/ic_launcher">
         <activity
+        
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -27,6 +29,8 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+                <meta-data android:name="io.flutter.network-policy"
+              android:resource="@xml/network_security_config"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
